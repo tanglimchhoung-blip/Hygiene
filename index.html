@@ -1,198 +1,119 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Internal ERP</title>
   <style>
     :root{
-      --bg:#0b1220;
-      --panel:#101a2f;
-      --panel2:#0f1a30;
-      --text:#e7eefc;
-      --muted:#98a8c7;
-      --line:#223256;
-      --good:#4ade80;
-      --bad:#fb7185;
-      --warn:#fbbf24;
-      --btn:#2563eb;
-      --btn2:#0ea5e9;
+      --bg:#070c16; --panel:#0f1a30; --panel2:#0b152a; --line:#223256;
+      --text:#e7eefc; --muted:#9ab0d6; --good:#4ade80; --bad:#fb7185;
+      --btn:#2563eb; --btn2:#0ea5e9; --danger:#fb7185;
+      --shadow:0 14px 34px rgba(0,0,0,0.40);
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      background:linear-gradient(180deg,#070c16,#0b1220 45%,#070c16);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: radial-gradient(1200px 600px at 30% -10%, rgba(37,99,235,0.20), transparent 60%),
+                  radial-gradient(900px 500px at 80% 10%, rgba(14,165,233,0.18), transparent 60%),
+                  linear-gradient(180deg,#050912,var(--bg) 45%,#050912);
       color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
     }
     header{
-      padding:18px 16px;
-      border-bottom:1px solid var(--line);
-      position:sticky; top:0;
-      background:rgba(11,18,32,0.88);
+      position:sticky; top:0; z-index:10;
+      background:rgba(7,12,22,.86);
       backdrop-filter: blur(10px);
-      z-index:10;
+      border-bottom:1px solid var(--line);
     }
-    .wrap{max-width:1100px;margin:0 auto;padding:0 12px}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    h1{font-size:18px;margin:0;font-weight:700}
+    .wrap{max-width:1100px;margin:0 auto;padding:0 14px}
+    .top{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:10px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:10px}
+    h1{margin:0;font-size:18px;font-weight:900}
     .pill{
-      font-size:12px;color:var(--muted);
-      padding:6px 10px;border:1px solid var(--line);border-radius:999px;
-      background:rgba(16,26,47,0.6);
-      white-space:nowrap;
+      padding:6px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(16,26,47,.65);color:var(--muted);font-size:12px;white-space:nowrap
     }
-    .grid{
-      display:grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap:12px;
-      padding:12px 0 22px;
-    }
-    @media (max-width: 960px){
-      .grid{grid-template-columns:1fr}
-    }
+    .pill.good{border-color:rgba(74,222,128,.35);color:var(--good);background:rgba(74,222,128,.10)}
+    .pill.bad{border-color:rgba(251,113,133,.35);color:var(--bad);background:rgba(251,113,133,.10)}
+    main{padding:14px 0 26px}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
     .card{
-      background:rgba(16,26,47,0.75);
-      border:1px solid var(--line);
-      border-radius:16px;
-      box-shadow:0 12px 30px rgba(0,0,0,0.35);
-      overflow:hidden;
+      background:rgba(15,26,48,.72);border:1px solid var(--line);
+      border-radius:18px;box-shadow:var(--shadow);overflow:hidden
     }
     .card h2{
-      margin:0;
-      font-size:14px;
-      padding:12px 12px;
-      border-bottom:1px solid var(--line);
-      background:rgba(15,26,48,0.7);
-      display:flex;align-items:center;justify-content:space-between;
-      gap:10px;
+      margin:0;padding:12px 14px;font-size:14px;border-bottom:1px solid var(--line);
+      background:rgba(11,21,42,.70);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap
     }
-    .card .body{padding:12px}
+    .body{padding:14px}
     .tabs{display:flex;gap:8px;flex-wrap:wrap}
     .tab{
-      border:1px solid var(--line);
-      background:rgba(16,26,47,0.6);
-      color:var(--muted);
-      padding:8px 10px;border-radius:12px;
-      cursor:pointer;
-      font-size:13px;
-      user-select:none;
+      cursor:pointer;padding:8px 10px;border-radius:12px;border:1px solid var(--line);
+      background:rgba(11,21,42,.55);color:var(--muted);font-size:13px;user-select:none
     }
-    .tab.active{
-      color:var(--text);
-      border-color:#2f4a86;
-      background:rgba(37,99,235,0.15);
-    }
+    .tab.active{color:var(--text);border-color:#2f4a86;background:rgba(37,99,235,.15)}
     .section{display:none}
     .section.active{display:block}
-
-    label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
-    .form{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap:10px;
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .form{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;align-items:end}
+    .col-12{grid-column:span 12}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}.col-2{grid-column:span 2}
+    @media(max-width:720px){.col-6,.col-4,.col-3,.col-2{grid-column:span 12}}
+    label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
+    input{
+      width:100%;border:1px solid var(--line);background:rgba(5,9,18,.55);
+      color:var(--text);border-radius:12px;padding:10px;font-size:13px;outline:none;line-height:1.2
     }
-    .col-12{grid-column:span 12}
-    .col-8{grid-column:span 8}
-    .col-6{grid-column:span 6}
-    .col-4{grid-column:span 4}
-    .col-3{grid-column:span 3}
-    .col-2{grid-column:span 2}
-    @media (max-width: 720px){
-      .col-8,.col-6,.col-4,.col-3,.col-2{grid-column:span 12}
-    }
-
-    /* Inputs: no overlay, clean numeric, smaller digits */
-    input, select, textarea{
-      width:100%;
-      border:1px solid var(--line);
-      background:rgba(9,14,26,0.65);
-      color:var(--text);
-      border-radius:12px;
-      padding:10px 10px;
-      font-size:13px;
-      outline:none;
-      line-height:1.2;
-    }
-    input.num{
-      font-size:12px;               /* smaller number font */
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.2px;
-    }
-    input:focus, select:focus, textarea:focus{
-      border-color:#3b82f6;
-      box-shadow:0 0 0 3px rgba(59,130,246,0.20);
-    }
-    /* Remove number spinners */
+    input.num{font-size:12px;font-variant-numeric:tabular-nums}
+    input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.18)}
     input[type=number]::-webkit-outer-spin-button,
-    input[type=number]::-webkit-inner-spin-button{
-      -webkit-appearance:none; margin:0;
-    }
+    input[type=number]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
     input[type=number]{ -moz-appearance:textfield; }
-
+    .step{
+      border:1px solid var(--line);background:rgba(5,9,18,.35);
+      border-radius:16px;padding:12px;margin-bottom:12px
+    }
+    .stepTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+    .chip{
+      font-size:12px;padding:6px 10px;border:1px solid var(--line);
+      border-radius:999px;background:rgba(16,31,62,.65);color:var(--muted)
+    }
     .btns{display:flex;gap:8px;flex-wrap:wrap}
     button{
-      border:0;
-      background:var(--btn);
-      color:#fff;
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:700;
-      font-size:13px;
+      border:0;border-radius:12px;padding:10px 12px;cursor:pointer;
+      font-weight:900;font-size:13px;color:#fff;background:var(--btn)
     }
-    button.secondary{background:rgba(14,165,233,0.18); border:1px solid rgba(14,165,233,0.35)}
+    button.secondary{background:rgba(14,165,233,.16);border:1px solid rgba(14,165,233,.35)}
     button.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
-    button.danger{background:rgba(251,113,133,0.18);border:1px solid rgba(251,113,133,0.35)}
-    button:disabled{opacity:0.55;cursor:not-allowed}
-
+    button.danger{background:rgba(251,113,133,.16);border:1px solid rgba(251,113,133,.35)}
+    button:disabled{opacity:.55;cursor:not-allowed}
+    .hint{font-size:12px;color:var(--muted);margin-top:6px}
+    .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+    @media(max-width:720px){.kpi{grid-template-columns:1fr}}
+    .kbox{border:1px solid var(--line);background:rgba(5,9,18,.35);border-radius:14px;padding:10px}
+    .kbox .t{font-size:12px;color:var(--muted)}
+    .kbox .v{font-size:18px;font-weight:900;margin-top:4px;font-variant-numeric:tabular-nums}
+    .consoleWrap{display:none;margin-top:12px}
     .log{
-      border:1px solid var(--line);
-      background:rgba(9,14,26,0.55);
-      border-radius:14px;
-      padding:10px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size:12px;
-      color:#cfe2ff;
-      white-space:pre-wrap;
-      max-height: 360px;
-      overflow:auto;
+      border:1px solid var(--line);background:rgba(5,9,18,.45);
+      border-radius:14px;padding:10px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12px;white-space:pre-wrap;max-height:320px;overflow:auto;color:#d6e6ff
     }
-    .statusline{
-      display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
-      margin-bottom:10px;
-    }
-    .badge{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
-    .badge.good{border-color:rgba(74,222,128,0.35);color:var(--good);background:rgba(74,222,128,0.10)}
-    .badge.bad{border-color:rgba(251,113,133,0.35);color:var(--bad);background:rgba(251,113,133,0.10)}
-    .help{font-size:12px;color:var(--muted);margin-top:6px}
-    .small{font-size:12px;color:var(--muted)}
-    .divider{height:1px;background:var(--line);margin:12px 0}
-    .kpi{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
-    }
-    @media (max-width:720px){ .kpi{grid-template-columns:1fr} }
-    .kpi .box{
-      border:1px solid var(--line);
-      background:rgba(9,14,26,0.45);
-      border-radius:14px;
-      padding:10px;
-    }
-    .kpi .title{font-size:12px;color:var(--muted)}
-    .kpi .val{font-size:18px;font-weight:800;margin-top:4px;font-variant-numeric: tabular-nums}
   </style>
 </head>
+
 <body>
 <header>
   <div class="wrap">
-    <div class="row" style="justify-content:space-between">
-      <div class="row">
+    <div class="top">
+      <div class="brand">
         <h1>Internal ERP</h1>
-        <span class="pill">Google Sheets + Apps Script backend</span>
+        <span class="pill">Google Sheets + Apps Script</span>
       </div>
       <div class="row">
         <span class="pill">FX: 2 decimals</span>
-        <span class="pill" id="apiPill">API: not tested</span>
+        <span class="pill" id="apiStatus">API: not tested</span>
       </div>
     </div>
   </div>
@@ -200,12 +121,10 @@
 
 <main class="wrap">
   <div class="grid">
-
-    <!-- LEFT: App -->
     <div class="card">
       <h2>
         <span>Operations</span>
-        <div class="tabs" id="tabs">
+        <div class="tabs">
           <div class="tab active" data-tab="purchase">Purchase</div>
           <div class="tab" data-tab="sales">Sales</div>
           <div class="tab" data-tab="expenses">Expenses</div>
@@ -215,299 +134,329 @@
       </h2>
 
       <div class="body">
+        <div class="row" style="justify-content:space-between;margin-bottom:10px;">
+          <div class="row">
+            <span class="chip" id="poChip">PO: (none)</span>
+            <span class="chip" id="soChip">SO: (none)</span>
+          </div>
+          <div class="btns">
+            <button class="ghost" id="btnPing">Test API</button>
+            <button class="ghost" id="btnToggleConsole">Show Console</button>
+          </div>
+        </div>
 
-        <!-- Purchase -->
+        <!-- PURCHASE -->
         <section class="section active" id="purchase">
-          <div class="statusline">
-            <span class="badge" id="poBadge">PO: none</span>
-            <div class="btns">
-              <button class="ghost" id="btnPing">Test API</button>
-              <button class="ghost" id="btnClear">Clear Form</button>
+          <div class="step">
+            <div class="stepTitle">
+              <strong>Step 1 — Create PO Header</strong>
+              <span class="chip">Create one PO → add many lines</span>
+            </div>
+
+            <div class="form">
+              <div class="col-4">
+                <label>PO Date</label>
+                <input id="po_date" type="date"/>
+              </div>
+              <div class="col-4">
+                <label>Supplier</label>
+                <input id="po_supplier" placeholder="Supplier name"/>
+              </div>
+              <div class="col-2">
+                <label>FX (RMB per USD)</label>
+                <input id="po_fx" class="num" type="number" step="0.01" min="0.01" placeholder="7.20"/>
+              </div>
+              <div class="col-2">
+                <label>Shipping (USD)</label>
+                <input id="po_ship" class="num" type="number" step="0.01" min="0" placeholder="0.00"/>
+              </div>
+
+              <div class="col-12 btns">
+                <button id="btnCreatePO">Create PO Header</button>
+                <button class="ghost" id="btnNewPO">New PO</button>
+              </div>
+              <div class="col-12 hint">Create PO once. “New PO” clears current PO for the next purchase.</div>
             </div>
           </div>
 
-          <div class="form">
-            <div class="col-4">
-              <label>PO Date</label>
-              <input id="po_date" type="date" />
-            </div>
-            <div class="col-4">
-              <label>Supplier</label>
-              <input id="po_supplier" placeholder="Supplier name" />
-            </div>
-            <div class="col-2">
-              <label>FX Rate (RMB per USD)</label>
-              <input id="po_fx" class="num" type="number" step="0.01" placeholder="7.20" />
-              <div class="help">Always 2 decimals</div>
-            </div>
-            <div class="col-2">
-              <label>Shipping (USD)</label>
-              <input id="po_ship" class="num" type="number" step="0.01" placeholder="0.00" />
+          <div class="step">
+            <div class="stepTitle">
+              <strong>Step 2 — Add Purchase Line</strong>
+              <span class="chip">Add SKU lines into this PO</span>
             </div>
 
-            <div class="col-12 btns">
-              <button id="btnCreatePO">Create Purchase Header</button>
-              <button class="secondary" id="btnAddPOLine" disabled>Add Purchase Line</button>
-              <button class="secondary" id="btnPostPO" disabled>Post PO → Inventory</button>
-            </div>
+            <div class="form">
+              <div class="col-4">
+                <label>SKU</label>
+                <input id="po_sku" placeholder="e.g., HY-SPRAY-500-PINK"/>
+              </div>
+              <div class="col-3">
+                <label>Qty</label>
+                <input id="po_qty" class="num" type="number" step="1" min="1" placeholder="10"/>
+              </div>
+              <div class="col-3">
+                <label>RMB Unit Price</label>
+                <input id="po_rmb_unit" class="num" type="number" step="0.01" min="0" placeholder="12.50"/>
+              </div>
+              <div class="col-2">
+                <label>Location</label>
+                <input id="po_loc" value="MAIN"/>
+              </div>
 
-            <div class="col-12 divider"></div>
-
-            <div class="col-4">
-              <label>SKU</label>
-              <input id="po_sku" placeholder="e.g., HY-SPRAY-500-PINK" />
-            </div>
-            <div class="col-3">
-              <label>Qty</label>
-              <input id="po_qty" class="num" type="number" step="1" placeholder="10" />
-            </div>
-            <div class="col-3">
-              <label>RMB Unit Price</label>
-              <input id="po_rmb_unit" class="num" type="number" step="0.01" placeholder="12.50" />
-            </div>
-            <div class="col-2">
-              <label>Location</label>
-              <input id="po_loc" value="MAIN" />
-            </div>
-
-            <div class="col-12 small">
-              Flow: create header → add lines → post to inventory (IN). Shipping cost is allocated by your Sheet formulas.
+              <div class="col-12 btns">
+                <button class="secondary" id="btnAddPOLine" disabled>Add Purchase Line</button>
+                <button class="secondary" id="btnPostPO" disabled>Post PO → Inventory</button>
+              </div>
+              <div class="col-12 hint">Shipping allocation & landed cost are calculated by your Google Sheet formulas.</div>
             </div>
           </div>
         </section>
 
-        <!-- Sales -->
+        <!-- SALES -->
         <section class="section" id="sales">
-          <div class="statusline">
-            <span class="badge" id="soBadge">SO: none</span>
-            <div class="btns">
-              <button class="ghost" id="btnClearSO">Clear Form</button>
+          <div class="step">
+            <div class="stepTitle">
+              <strong>Step 1 — Create Sales Order</strong>
+              <span class="chip">Create one SO → add many lines</span>
+            </div>
+
+            <div class="form">
+              <div class="col-4">
+                <label>SO Date</label>
+                <input id="so_date" type="date"/>
+              </div>
+              <div class="col-4">
+                <label>Customer</label>
+                <input id="so_customer" placeholder="Customer name"/>
+              </div>
+              <div class="col-4">
+                <label>Location</label>
+                <input id="so_loc" value="MAIN"/>
+              </div>
+
+              <div class="col-12 btns">
+                <button id="btnCreateSO">Create SO</button>
+                <button class="ghost" id="btnNewSO">New SO</button>
+              </div>
             </div>
           </div>
 
-          <div class="form">
-            <div class="col-4">
-              <label>SO Date</label>
-              <input id="so_date" type="date" />
-            </div>
-            <div class="col-4">
-              <label>Customer</label>
-              <input id="so_customer" placeholder="Customer name" />
-            </div>
-            <div class="col-4">
-              <label>Location</label>
-              <input id="so_loc" value="MAIN" />
+          <div class="step">
+            <div class="stepTitle">
+              <strong>Step 2 — Add Sales Line + Ship</strong>
+              <span class="chip">Ship (FIFO)</span>
             </div>
 
-            <div class="col-12 btns">
-              <button id="btnCreateSO">Create Sales Order</button>
-              <button class="secondary" id="btnAddSOLine" disabled>Add Sales Line</button>
-              <button class="danger" id="btnShipSO" disabled>Ship (FIFO)</button>
-            </div>
+            <div class="form">
+              <div class="col-4">
+                <label>SKU</label>
+                <input id="so_sku" placeholder="e.g., HY-SPRAY-500-PINK"/>
+              </div>
+              <div class="col-3">
+                <label>Qty</label>
+                <input id="so_qty" class="num" type="number" step="1" min="1" placeholder="1"/>
+              </div>
+              <div class="col-3">
+                <label>Sell Price (USD)</label>
+                <input id="so_price" class="num" type="number" step="0.01" min="0" placeholder="5.00"/>
+              </div>
+              <div class="col-2">
+                <label>Ship Date</label>
+                <input id="so_ship_date" type="date"/>
+              </div>
 
-            <div class="col-12 divider"></div>
-
-            <div class="col-4">
-              <label>SKU</label>
-              <input id="so_sku" placeholder="e.g., HY-SPRAY-500-PINK" />
-            </div>
-            <div class="col-3">
-              <label>Qty</label>
-              <input id="so_qty" class="num" type="number" step="1" placeholder="1" />
-            </div>
-            <div class="col-3">
-              <label>Sell Price (USD)</label>
-              <input id="so_price" class="num" type="number" step="0.01" placeholder="5.00" />
-            </div>
-            <div class="col-2">
-              <label>Ship Date</label>
-              <input id="so_ship_date" type="date" />
-            </div>
-
-            <div class="col-12 small">
-              Ship (FIFO) will reduce inventory and write GL entries (Sales, COGS, Inventory).
+              <div class="col-12 btns">
+                <button class="secondary" id="btnAddSOLine" disabled>Add Sales Line</button>
+                <button class="danger" id="btnShipSO" disabled>Ship (FIFO)</button>
+              </div>
+              <div class="col-12 hint">Ship writes Inventory OUT + basic KPI results. (We can enhance full GL later.)</div>
             </div>
           </div>
         </section>
 
-        <!-- Expenses -->
+        <!-- EXPENSES -->
         <section class="section" id="expenses">
-          <div class="form">
-            <div class="col-4">
-              <label>Expense Date</label>
-              <input id="exp_date" type="date" />
-            </div>
-            <div class="col-4">
-              <label>Category (e.g., Marketing)</label>
-              <input id="exp_cat" placeholder="Marketing / Salary / Rent / ..." />
-              <div class="help">You can type any category. Later we can link to Chart_of_Accounts.</div>
-            </div>
-            <div class="col-4">
-              <label>Sub Category</label>
-              <input id="exp_sub" placeholder="Facebook Ads / Influencer / ..." />
-            </div>
-            <div class="col-4">
-              <label>Amount (USD)</label>
-              <input id="exp_amt" class="num" type="number" step="0.01" placeholder="0.00" />
-            </div>
-            <div class="col-8">
-              <label>Note</label>
-              <input id="exp_note" placeholder="Optional note" />
+          <div class="step">
+            <div class="stepTitle">
+              <strong>Add Operating Expense</strong>
+              <span class="chip">Unlimited categories</span>
             </div>
 
-            <div class="col-12 btns">
-              <button id="btnAddExp">Add Expense</button>
+            <div class="form">
+              <div class="col-4">
+                <label>Date</label>
+                <input id="exp_date" type="date"/>
+              </div>
+              <div class="col-4">
+                <label>Category</label>
+                <input id="exp_cat" placeholder="Marketing / Salary / Rent / ..."/>
+              </div>
+              <div class="col-4">
+                <label>Sub Category</label>
+                <input id="exp_sub" placeholder="Facebook Ads / Influencer / ..."/>
+              </div>
+              <div class="col-4">
+                <label>Amount (USD)</label>
+                <input id="exp_amt" class="num" type="number" step="0.01" min="0" placeholder="0.00"/>
+              </div>
+              <div class="col-8">
+                <label>Note</label>
+                <input id="exp_note" placeholder="Optional"/>
+              </div>
+
+              <div class="col-12 btns">
+                <button id="btnAddExp">Save Expense</button>
+              </div>
             </div>
           </div>
         </section>
 
-        <!-- Reports -->
+        <!-- REPORTS -->
         <section class="section" id="reports">
-          <div class="form">
-            <div class="col-6">
-              <label>Reports_PnL From Date (set in Sheet A2)</label>
-              <input id="r_from" type="date" />
-              <div class="help">This UI does NOT write dates to sheet yet. Set A2/B2 in Reports_PnL first.</div>
-            </div>
-            <div class="col-6">
-              <label>Reports_PnL To Date (set in Sheet B2)</label>
-              <input id="r_to" type="date" />
+          <div class="step">
+            <div class="stepTitle">
+              <strong>Reports + Dashboard</strong>
+              <span class="chip">Select date here</span>
             </div>
 
-            <div class="col-12 btns">
-              <button id="btnGenReports">Generate Reports</button>
+            <div class="form">
+              <div class="col-4">
+                <label>From Date</label>
+                <input id="rep_from" type="date"/>
+              </div>
+              <div class="col-4">
+                <label>To Date</label>
+                <input id="rep_to" type="date"/>
+              </div>
+              <div class="col-4 btns">
+                <button id="btnGenReports">Generate</button>
+                <button class="ghost" id="btnRefreshKpi">Refresh KPI</button>
+              </div>
             </div>
-
-            <div class="divider"></div>
 
             <div class="kpi">
-              <div class="box">
-                <div class="title">Sales</div>
-                <div class="val" id="kpiSales">—</div>
+              <div class="kbox">
+                <div class="t">Sales</div>
+                <div class="v" id="kpiSales">—</div>
               </div>
-              <div class="box">
-                <div class="title">Net Profit</div>
-                <div class="val" id="kpiNet">—</div>
+              <div class="kbox">
+                <div class="t">Net Profit</div>
+                <div class="v" id="kpiNet">—</div>
               </div>
-              <div class="box">
-                <div class="title">Marketing Expense</div>
-                <div class="val" id="kpiMkt">—</div>
+              <div class="kbox">
+                <div class="t">Marketing</div>
+                <div class="v" id="kpiMkt">—</div>
               </div>
             </div>
 
-            <div class="help" style="margin-top:10px">
-              After “Generate Reports”, check tabs: Reports_PnL, Reports_BS, Dashboard in Google Sheets.
-            </div>
+            <div class="hint">Generate will set Reports_PnL!A2:B2 automatically, then pull KPI from Dashboard sheet.</div>
           </div>
         </section>
 
-        <!-- Inventory -->
+        <!-- INVENTORY -->
         <section class="section" id="inventory">
-          <div class="form">
-            <div class="col-12 btns">
-              <button id="btnInv">Refresh On-hand</button>
+          <div class="step">
+            <div class="stepTitle">
+              <strong>Inventory On-hand</strong>
+              <span class="chip">By SKU</span>
             </div>
-            <div class="col-12">
-              <div class="log" id="invLog">Click “Refresh On-hand” to view inventory by SKU.</div>
+
+            <div class="btns" style="margin-bottom:10px;">
+              <button id="btnInv">Refresh</button>
             </div>
+
+            <div class="log" id="invLog">Click Refresh to load on-hand by SKU.</div>
           </div>
         </section>
 
-      </div>
-    </div>
-
-    <!-- RIGHT: Console -->
-    <div class="card">
-      <h2>
-        <span>Console</span>
-        <span class="pill" id="lastAction">Ready</span>
-      </h2>
-      <div class="body">
-        <div class="small" style="margin-bottom:8px">
-          Backend URL (Apps Script):
-          <div class="pill" style="display:inline-block;margin-left:6px" id="apiUrlPill"></div>
+        <!-- Console (hidden by default) -->
+        <div class="consoleWrap" id="consoleWrap">
+          <div class="step">
+            <div class="stepTitle">
+              <strong>Console (optional)</strong>
+              <span class="chip">For debugging only</span>
+            </div>
+            <div class="hint" style="margin-bottom:8px;word-break:break-all">
+              Backend URL: <span id="apiUrl"></span>
+            </div>
+            <div class="log" id="log"></div>
+          </div>
         </div>
-        <div class="log" id="log"></div>
+
       </div>
     </div>
-
   </div>
 </main>
 
 <script>
-  // ✅ Your Apps Script Web App URL
+  // Your Apps Script Web App URL (LIVE)
   const API_URL = "https://script.google.com/macros/s/AKfycbwYLqU1MhrhL3dy3A4HZZDN-9Tifs7iDNB26jg8XiJIg2e_LogxAljN5sUbgEhD9FA/exec";
 
-  // ---------- UI helpers ----------
-  const $ = (id) => document.getElementById(id);
-  const logEl = $("log");
-  const apiPill = $("apiPill");
-  const lastAction = $("lastAction");
-  $("apiUrlPill").textContent = API_URL;
+  const $ = (id)=>document.getElementById(id);
 
-  function setTodayDefaults(){
-    const today = new Date();
-    const iso = today.toISOString().slice(0,10);
+  const apiStatus = $("apiStatus");
+  const logEl = $("log");
+  const consoleWrap = $("consoleWrap");
+  $("apiUrl").textContent = API_URL;
+
+  let currentPO = null;
+  let currentSO = null;
+
+  function isoToday(){ return new Date().toISOString().slice(0,10); }
+  function setDefaultsIfEmpty(){
+    const iso = isoToday();
     if(!$("po_date").value) $("po_date").value = iso;
     if(!$("so_date").value) $("so_date").value = iso;
     if(!$("so_ship_date").value) $("so_ship_date").value = iso;
     if(!$("exp_date").value) $("exp_date").value = iso;
+    if(!$("rep_from").value) $("rep_from").value = iso;
+    if(!$("rep_to").value) $("rep_to").value = iso;
   }
-  setTodayDefaults();
+  setDefaultsIfEmpty();
 
-  function fmt2(n){
+  function round2(n){
     const x = Number(n);
     if(!isFinite(x)) return "";
     return (Math.round(x*100)/100).toFixed(2);
   }
 
   function appendLog(obj){
+    if(!logEl) return;
     const t = new Date().toISOString();
     const msg = (typeof obj === "string") ? obj : JSON.stringify(obj, null, 2);
-    logEl.textContent = `[${t}]\n${msg}\n\n` + logEl.textContent;
+    logEl.textContent = `[${t}] ${msg}\n\n` + logEl.textContent;
   }
 
-  // ---------- Safe fetch wrapper (avoids failed fetch) ----------
   async function apiCall(action, data={}, {timeoutMs=15000, retries=1} = {}){
-    lastAction.textContent = action;
-
     const payload = JSON.stringify({ action, data });
 
     for(let attempt=0; attempt<=retries; attempt++){
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      const timer = setTimeout(()=>controller.abort(), timeoutMs);
 
       try{
         const res = await fetch(API_URL, {
-          method: "POST",
-          // IMPORTANT: text/plain avoids preflight in most cases
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          method:"POST",
+          headers:{ "Content-Type":"text/plain;charset=utf-8" },
           body: payload,
-          signal: controller.signal,
+          signal: controller.signal
         });
-
         clearTimeout(timer);
 
-        // Apps Script sometimes returns 200 with JSON error body. Always parse.
         const text = await res.text();
         let json;
-        try { json = JSON.parse(text); } catch { json = { ok:false, raw:text }; }
+        try{ json = JSON.parse(text); }catch{ json = { ok:false, raw:text }; }
 
-        if(!res.ok){
-          throw new Error(`HTTP ${res.status}: ${text.slice(0,200)}`);
-        }
-
-        if(!json.ok){
-          throw new Error(json.error || "Unknown backend error");
-        }
+        if(!res.ok) throw new Error(`HTTP ${res.status}: ${text.slice(0,200)}`);
+        if(!json.ok) throw new Error(json.error || "Backend error");
 
         return json;
 
-      } catch(err){
+      }catch(err){
         clearTimeout(timer);
         if(attempt < retries){
-          appendLog({ warn: "request failed, retrying", attempt, error: String(err) });
-          await new Promise(r => setTimeout(r, 500));
+          appendLog({warn:"request failed, retrying", attempt, error:String(err)});
+          await new Promise(r=>setTimeout(r, 500));
           continue;
         }
         throw err;
@@ -515,7 +464,19 @@
     }
   }
 
-  // ---------- Tabs ----------
+  function updateChips(){
+    $("poChip").textContent = currentPO ? `PO: ${currentPO}` : "PO: (none)";
+    $("soChip").textContent = currentSO ? `SO: ${currentSO}` : "SO: (none)";
+    $("btnAddPOLine").disabled = !currentPO;
+    $("btnPostPO").disabled = !currentPO;
+    $("btnCreatePO").disabled = !!currentPO;
+    $("btnAddSOLine").disabled = !currentSO;
+    $("btnShipSO").disabled = !currentSO;
+    $("btnCreateSO").disabled = !!currentSO;
+  }
+  updateChips();
+
+  // Tabs
   document.querySelectorAll(".tab").forEach(tab=>{
     tab.addEventListener("click", ()=>{
       document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
@@ -525,66 +486,69 @@
     });
   });
 
-  // ---------- State ----------
-  let currentPO = null;
-  let currentSO = null;
+  // Console toggle
+  $("btnToggleConsole").addEventListener("click", ()=>{
+    const open = consoleWrap.style.display === "block";
+    consoleWrap.style.display = open ? "none" : "block";
+    $("btnToggleConsole").textContent = open ? "Show Console" : "Hide Console";
+  });
 
-  // ---------- Buttons ----------
+  // Ping
   $("btnPing").addEventListener("click", async ()=>{
     try{
       const res = await fetch(API_URL + "?action=ping");
       const json = await res.json();
-      apiPill.textContent = "API: OK";
-      apiPill.style.color = "var(--good)";
+      apiStatus.textContent = "API: OK";
+      apiStatus.className = "pill good";
       appendLog(json);
     }catch(e){
-      apiPill.textContent = "API: ERROR";
-      apiPill.style.color = "var(--bad)";
+      apiStatus.textContent = "API: ERROR";
+      apiStatus.className = "pill bad";
       appendLog({error:String(e)});
     }
   });
 
-  $("btnClear").addEventListener("click", ()=>{
+  // New PO
+  $("btnNewPO").addEventListener("click", ()=>{
     currentPO = null;
-    $("poBadge").textContent = "PO: none";
-    $("btnAddPOLine").disabled = true;
-    $("btnPostPO").disabled = true;
-
-    ["po_supplier","po_fx","po_ship","po_sku","po_qty","po_rmb_unit"].forEach(id=>$(id).value="");
-    setTodayDefaults();
-    appendLog("Cleared Purchase form.");
+    $("po_supplier").value = "";
+    $("po_fx").value = "";
+    $("po_ship").value = "";
+    $("po_sku").value = "";
+    $("po_qty").value = "";
+    $("po_rmb_unit").value = "";
+    setDefaultsIfEmpty();
+    updateChips();
+    appendLog("New PO started.");
   });
 
+  // Create PO
   $("btnCreatePO").addEventListener("click", async ()=>{
     try{
-      const fx = fmt2($("po_fx").value);
-      if(!fx) return alert("Please input FX rate (e.g. 7.20).");
-      const ship = fmt2($("po_ship").value || 0);
+      const fxNum = parseFloat(String($("po_fx").value||"").trim());
+      if(!isFinite(fxNum) || fxNum<=0) return alert("FX must be > 0 (example: 7.20)");
+      const fx = Number(round2(fxNum));
+      const shipNum = parseFloat(String($("po_ship").value||"0").trim());
+      const ship = isFinite(shipNum) ? Number(round2(shipNum)) : 0;
 
-      const data = {
-        po_date: $("po_date").value,
+      const out = await apiCall("createPurchaseHeader", {
+        po_date: $("po_date").value || isoToday(),
         supplier: $("po_supplier").value || "",
-        fx_rate: Number(fx),
-        shipping_usd: Number(ship),
-      };
-
-      const out = await apiCall("createPurchaseHeader", data, {retries:1});
-      currentPO = out.result.po_id;
-
-      $("poBadge").textContent = "PO: " + currentPO;
-      $("poBadge").className = "badge good";
-      $("btnAddPOLine").disabled = false;
-      $("btnPostPO").disabled = false;
+        fx_rate: fx,
+        shipping_usd: ship
+      });
 
       appendLog(out);
+      currentPO = out.result.po_id;
+      updateChips();
 
-    } catch(e){
-      $("poBadge").className = "badge bad";
+    }catch(e){
       appendLog({error:String(e)});
       alert("Create PO failed: " + e.message);
     }
   });
 
+  // Add PO line
   $("btnAddPOLine").addEventListener("click", async ()=>{
     try{
       if(!currentPO) return alert("Create PO header first.");
@@ -593,126 +557,110 @@
       const unit = Number($("po_rmb_unit").value);
 
       if(!sku) return alert("SKU is required.");
-      if(!qty || qty<=0) return alert("Qty must be > 0.");
-      if(isNaN(unit) || unit<0) return alert("RMB unit price must be >= 0.");
+      if(!isFinite(qty) || qty<=0) return alert("Qty must be > 0.");
+      if(!isFinite(unit) || unit<0) return alert("RMB Unit Price must be >= 0.");
 
       const out = await apiCall("addPurchaseLine", {
         po_id: currentPO,
         sku,
         qty,
         rmb_unit_price: unit
-      }, {retries:1});
+      });
 
       appendLog(out);
-      // keep SKU/qty/unit for rapid entry? up to you. we'll clear qty+unit only.
       $("po_qty").value = "";
       $("po_rmb_unit").value = "";
 
-    } catch(e){
+    }catch(e){
       appendLog({error:String(e)});
-      alert("Add PO line failed: " + e.message);
+      alert("Add line failed: " + e.message);
     }
   });
 
+  // Post PO to inventory
   $("btnPostPO").addEventListener("click", async ()=>{
     try{
       if(!currentPO) return alert("Create PO header first.");
-      const loc = $("po_loc").value || "MAIN";
       const out = await apiCall("postPurchaseToInventory", {
         po_id: currentPO,
-        location: loc
-      }, {retries:1});
-
+        location: $("po_loc").value || "MAIN"
+      });
       appendLog(out);
       alert(`Posted to Inventory. Rows: ${out.result.posted_rows}`);
-
-    } catch(e){
+    }catch(e){
       appendLog({error:String(e)});
-      alert("Post to inventory failed: " + e.message + "\n\nTip: Check Purchase_Lines formulas (landed_unit_cost_usd must not be blank).");
+      alert("Post failed: " + e.message + "\n\nTip: Ensure Purchase_Lines landed_unit_cost_usd is not blank.");
     }
   });
 
-  // Sales
-  $("btnClearSO").addEventListener("click", ()=>{
+  // New SO
+  $("btnNewSO").addEventListener("click", ()=>{
     currentSO = null;
-    $("soBadge").textContent = "SO: none";
-    $("soBadge").className = "badge";
-    $("btnAddSOLine").disabled = true;
-    $("btnShipSO").disabled = true;
-    ["so_customer","so_sku","so_qty","so_price"].forEach(id=>$(id).value="");
-    setTodayDefaults();
-    appendLog("Cleared Sales form.");
+    $("so_customer").value = "";
+    $("so_sku").value = "";
+    $("so_qty").value = "";
+    $("so_price").value = "";
+    setDefaultsIfEmpty();
+    updateChips();
+    appendLog("New SO started.");
   });
 
+  // Create SO
   $("btnCreateSO").addEventListener("click", async ()=>{
     try{
-      const data = {
-        so_date: $("so_date").value,
+      const out = await apiCall("createSalesOrderHeader", {
+        so_date: $("so_date").value || isoToday(),
         customer: $("so_customer").value || "",
         status: "DRAFT"
-      };
-      const out = await apiCall("createSalesOrderHeader", data, {retries:1});
-      currentSO = out.result.so_id;
-
-      $("soBadge").textContent = "SO: " + currentSO;
-      $("soBadge").className = "badge good";
-      $("btnAddSOLine").disabled = false;
-      $("btnShipSO").disabled = false;
+      });
       appendLog(out);
-
-    } catch(e){
-      $("soBadge").className = "badge bad";
+      currentSO = out.result.so_id;
+      updateChips();
+    }catch(e){
       appendLog({error:String(e)});
       alert("Create SO failed: " + e.message);
     }
   });
 
+  // Add SO line
   $("btnAddSOLine").addEventListener("click", async ()=>{
     try{
-      if(!currentSO) return alert("Create SO header first.");
+      if(!currentSO) return alert("Create Sales Order first.");
       const sku = $("so_sku").value.trim();
       const qty = Number($("so_qty").value);
       const price = Number($("so_price").value);
 
       if(!sku) return alert("SKU is required.");
-      if(!qty || qty<=0) return alert("Qty must be > 0.");
-      if(isNaN(price) || price<0) return alert("Sell price must be >= 0.");
+      if(!isFinite(qty) || qty<=0) return alert("Qty must be > 0.");
+      if(!isFinite(price) || price<0) return alert("Sell price must be >= 0.");
 
       const out = await apiCall("addSalesOrderLine", {
-        so_id: currentSO,
-        sku,
-        qty,
-        sell_price_usd: price
-      }, {retries:1});
-
+        so_id: currentSO, sku, qty, sell_price_usd: price
+      });
       appendLog(out);
       $("so_qty").value = "";
       $("so_price").value = "";
 
-    } catch(e){
+    }catch(e){
       appendLog({error:String(e)});
-      alert("Add SO line failed: " + e.message);
+      alert("Add sales line failed: " + e.message);
     }
   });
 
+  // Ship SO
   $("btnShipSO").addEventListener("click", async ()=>{
     try{
-      if(!currentSO) return alert("Create SO header first.");
-      const loc = $("so_loc").value || "MAIN";
-      const shipDate = $("so_ship_date").value;
-
+      if(!currentSO) return alert("Create Sales Order first.");
       const out = await apiCall("shipSalesOrder", {
         so_id: currentSO,
-        ship_date: shipDate,
-        location: loc
-      }, {retries:1});
-
+        ship_date: $("so_ship_date").value || isoToday(),
+        location: $("so_loc").value || "MAIN"
+      });
       appendLog(out);
-      alert(`Shipped.\nRevenue: ${fmt2(out.result.revenue_usd)}\nCOGS: ${fmt2(out.result.cogs_usd)}\nGross Profit: ${fmt2(out.result.gross_profit_usd)}`);
-
-    } catch(e){
+      alert(`Shipped.\nRevenue: ${round2(out.result.revenue_usd)}\nCOGS: ${round2(out.result.cogs_usd)}\nGross Profit: ${round2(out.result.gross_profit_usd)}`);
+    }catch(e){
       appendLog({error:String(e)});
-      alert("Ship failed: " + e.message + "\n\nTip: If it says not enough inventory, post purchase to inventory first.");
+      alert("Ship failed: " + e.message);
     }
   });
 
@@ -720,83 +668,81 @@
   $("btnAddExp").addEventListener("click", async ()=>{
     try{
       const amt = Number($("exp_amt").value);
-      if(isNaN(amt) || amt < 0) return alert("Amount must be >= 0.");
+      if(!isFinite(amt) || amt<0) return alert("Amount must be >= 0.");
 
       const out = await apiCall("addOperatingExpense", {
-        exp_date: $("exp_date").value,
+        exp_date: $("exp_date").value || isoToday(),
         category: $("exp_cat").value || "",
         sub_category: $("exp_sub").value || "",
         amount_usd: amt,
         note: $("exp_note").value || ""
-      }, {retries:1});
-
+      });
       appendLog(out);
       $("exp_amt").value = "";
       $("exp_note").value = "";
       alert("Expense saved.");
-
-    } catch(e){
+    }catch(e){
       appendLog({error:String(e)});
-      alert("Add expense failed: " + e.message);
+      alert("Expense failed: " + e.message);
     }
   });
 
-  // Reports
+  // Reports: set date + generate + refresh KPI
+  async function refreshKpi(){
+    const out = await apiCall("getDashboardKpis", {});
+    $("kpiSales").textContent = round2(out.result.sales);
+    $("kpiNet").textContent = round2(out.result.net_profit);
+    $("kpiMkt").textContent = round2(out.result.marketing_expense);
+    appendLog(out);
+  }
+
   $("btnGenReports").addEventListener("click", async ()=>{
     try{
-      const out = await apiCall("generateReports", {}, {retries:1});
+      const from = $("rep_from").value || isoToday();
+      const to = $("rep_to").value || isoToday();
+
+      await apiCall("setReportDates", { from_date: from, to_date: to });
+      const out = await apiCall("generateReports", {});
       appendLog(out);
 
-      $("kpiSales").textContent = fmt2(out.result.sales);
-      $("kpiNet").textContent = fmt2(out.result.net_profit);
-      $("kpiMkt").textContent = fmt2((out.result.marketing_expense || out.result.marketing || 0) || 0); // fallback
-
-      // Your backend returns marketing from dashboard calculation only in sheet.
-      // We'll show Marketing = (not available from API) => 0 unless you later extend API.
-      // For now display from result if present.
-      if(out.result && typeof out.result.net_profit !== "undefined"){
-        $("kpiNet").textContent = fmt2(out.result.net_profit);
-      }
-      // If API doesn’t return marketing, show 0.00 (we can add it later).
-      if(!("marketing_expense" in out.result) && !("marketing" in out.result)){
-        $("kpiMkt").textContent = "0.00";
-      }
-
-      alert("Reports generated. Please check your Google Sheet tabs: Reports_PnL, Reports_BS, Dashboard.");
-
-    } catch(e){
+      await refreshKpi();
+      alert("Reports generated. KPI loaded from Dashboard.");
+    }catch(e){
       appendLog({error:String(e)});
-      alert("Generate reports failed: " + e.message + "\n\nTip: Set Reports_PnL!A2 and B2 dates first.");
+      alert("Generate reports failed: " + e.message);
     }
+  });
+
+  $("btnRefreshKpi").addEventListener("click", async ()=>{
+    try{ await refreshKpi(); }
+    catch(e){ appendLog({error:String(e)}); alert("Refresh KPI failed: " + e.message); }
   });
 
   // Inventory
   $("btnInv").addEventListener("click", async ()=>{
     try{
-      const out = await apiCall("getInventoryOnHand", {}, {retries:1});
+      const out = await apiCall("getInventoryOnHand", {});
       appendLog(out);
-
       const map = out.result.on_hand || {};
       const lines = Object.keys(map).sort().map(sku => `${sku}: ${map[sku]}`).join("\n");
       $("invLog").textContent = lines || "(no inventory yet)";
-
-    } catch(e){
+    }catch(e){
       appendLog({error:String(e)});
       alert("Inventory refresh failed: " + e.message);
     }
   });
 
-  // Auto test API once on load
+  // Auto ping once
   (async ()=>{
     try{
       const res = await fetch(API_URL + "?action=ping");
       const json = await res.json();
-      apiPill.textContent = "API: OK";
-      apiPill.style.color = "var(--good)";
+      apiStatus.textContent = "API: OK";
+      apiStatus.className = "pill good";
       appendLog(json);
     }catch(e){
-      apiPill.textContent = "API: ERROR";
-      apiPill.style.color = "var(--bad)";
+      apiStatus.textContent = "API: ERROR";
+      apiStatus.className = "pill bad";
       appendLog({error:String(e)});
     }
   })();
