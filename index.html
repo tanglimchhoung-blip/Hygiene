@@ -6,99 +6,199 @@
   <title>Internal ERP</title>
   <style>
     :root{
-      --bg:#070c16; --panel:#0f1a30; --panel2:#0b152a; --line:#223256;
-      --text:#e7eefc; --muted:#9ab0d6; --good:#4ade80; --bad:#fb7185;
-      --btn:#2563eb; --btn2:#0ea5e9; --danger:#fb7185;
-      --shadow:0 14px 34px rgba(0,0,0,0.40);
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --line:#e5e7eb;
+      --text:#111827;
+      --muted:#6b7280;
+      --primary:#2563eb;
+      --primary2:#0ea5e9;
+      --danger:#ef4444;
+      --good:#16a34a;
+      --shadow:0 10px 30px rgba(17,24,39,.08);
+      --radius:16px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      background: radial-gradient(1200px 600px at 30% -10%, rgba(37,99,235,0.20), transparent 60%),
-                  radial-gradient(900px 500px at 80% 10%, rgba(14,165,233,0.18), transparent 60%),
-                  linear-gradient(180deg,#050912,var(--bg) 45%,#050912);
+      background:var(--bg);
       color:var(--text);
     }
     header{
-      position:sticky; top:0; z-index:10;
-      background:rgba(7,12,22,.86);
-      backdrop-filter: blur(10px);
+      position:sticky;top:0;z-index:10;
+      background:rgba(255,255,255,.88);
+      backdrop-filter:blur(10px);
       border-bottom:1px solid var(--line);
     }
     .wrap{max-width:1100px;margin:0 auto;padding:0 14px}
-    .top{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:10px;flex-wrap:wrap}
-    .brand{display:flex;align-items:center;gap:10px}
+    .top{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 0;gap:12px;flex-wrap:wrap
+    }
+    .brand{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     h1{margin:0;font-size:18px;font-weight:900}
     .pill{
       padding:6px 10px;border-radius:999px;border:1px solid var(--line);
-      background:rgba(16,26,47,.65);color:var(--muted);font-size:12px;white-space:nowrap
+      background:#fff;color:var(--muted);font-size:12px;white-space:nowrap
     }
-    .pill.good{border-color:rgba(74,222,128,.35);color:var(--good);background:rgba(74,222,128,.10)}
-    .pill.bad{border-color:rgba(251,113,133,.35);color:var(--bad);background:rgba(251,113,133,.10)}
-    main{padding:14px 0 26px}
-    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    .pill.good{border-color:rgba(22,163,74,.25);background:rgba(22,163,74,.08);color:var(--good)}
+    .pill.bad{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.08);color:var(--danger)}
+    main{padding:16px 0 28px}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}
+
     .card{
-      background:rgba(15,26,48,.72);border:1px solid var(--line);
-      border-radius:18px;box-shadow:var(--shadow);overflow:hidden
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
     }
     .card h2{
-      margin:0;padding:12px 14px;font-size:14px;border-bottom:1px solid var(--line);
-      background:rgba(11,21,42,.70);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap
+      margin:0;
+      padding:12px 14px;
+      font-size:14px;
+      border-bottom:1px solid var(--line);
+      background:#fff;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
     }
     .body{padding:14px}
+
     .tabs{display:flex;gap:8px;flex-wrap:wrap}
     .tab{
-      cursor:pointer;padding:8px 10px;border-radius:12px;border:1px solid var(--line);
-      background:rgba(11,21,42,.55);color:var(--muted);font-size:13px;user-select:none
+      cursor:pointer;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--muted);
+      font-size:13px;
+      user-select:none;
     }
-    .tab.active{color:var(--text);border-color:#2f4a86;background:rgba(37,99,235,.15)}
+    .tab.active{
+      color:var(--text);
+      border-color:rgba(37,99,235,.35);
+      background:rgba(37,99,235,.08);
+    }
+
     .section{display:none}
     .section.active{display:block}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .form{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;align-items:end}
-    .col-12{grid-column:span 12}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}.col-2{grid-column:span 2}
-    @media(max-width:720px){.col-6,.col-4,.col-3,.col-2{grid-column:span 12}}
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+
+    .chip{
+      font-size:12px;
+      padding:6px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:#fff;
+      color:var(--muted);
+    }
+
+    .step{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:12px;
+    }
+    .stepTitle{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      margin-bottom:10px;flex-wrap:wrap
+    }
+    .hint{font-size:12px;color:var(--muted);margin-top:6px}
+
+    .form{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:10px;
+      align-items:end;
+    }
+    .col-12{grid-column:span 12}
+    .col-6{grid-column:span 6}
+    .col-4{grid-column:span 4}
+    .col-3{grid-column:span 3}
+    .col-2{grid-column:span 2}
+    @media(max-width:720px){
+      .col-6,.col-4,.col-3,.col-2{grid-column:span 12}
+    }
+
     label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
     input{
-      width:100%;border:1px solid var(--line);background:rgba(5,9,18,.55);
-      color:var(--text);border-radius:12px;padding:10px;font-size:13px;outline:none;line-height:1.2
+      width:100%;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text);
+      border-radius:12px;
+      padding:10px;
+      font-size:13px;
+      outline:none;
+      line-height:1.2;
     }
     input.num{font-size:12px;font-variant-numeric:tabular-nums}
-    input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.18)}
+    input:focus{
+      border-color:rgba(37,99,235,.45);
+      box-shadow:0 0 0 3px rgba(37,99,235,.14);
+    }
     input[type=number]::-webkit-outer-spin-button,
     input[type=number]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
     input[type=number]{ -moz-appearance:textfield; }
-    .step{
-      border:1px solid var(--line);background:rgba(5,9,18,.35);
-      border-radius:16px;padding:12px;margin-bottom:12px
-    }
-    .stepTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
-    .chip{
-      font-size:12px;padding:6px 10px;border:1px solid var(--line);
-      border-radius:999px;background:rgba(16,31,62,.65);color:var(--muted)
-    }
+
     .btns{display:flex;gap:8px;flex-wrap:wrap}
     button{
-      border:0;border-radius:12px;padding:10px 12px;cursor:pointer;
-      font-weight:900;font-size:13px;color:#fff;background:var(--btn)
+      border:0;
+      border-radius:12px;
+      padding:10px 12px;
+      cursor:pointer;
+      font-weight:900;
+      font-size:13px;
+      color:#fff;
+      background:var(--primary);
     }
-    button.secondary{background:rgba(14,165,233,.16);border:1px solid rgba(14,165,233,.35)}
-    button.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
-    button.danger{background:rgba(251,113,133,.16);border:1px solid rgba(251,113,133,.35)}
+    button.secondary{
+      background:rgba(14,165,233,.12);
+      color:#075985;
+      border:1px solid rgba(14,165,233,.35);
+    }
+    button.ghost{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    button.danger{
+      background:rgba(239,68,68,.10);
+      color:#991b1b;
+      border:1px solid rgba(239,68,68,.30);
+    }
     button:disabled{opacity:.55;cursor:not-allowed}
-    .hint{font-size:12px;color:var(--muted);margin-top:6px}
-    .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+
+    .kpi{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-top:10px;
+    }
     @media(max-width:720px){.kpi{grid-template-columns:1fr}}
-    .kbox{border:1px solid var(--line);background:rgba(5,9,18,.35);border-radius:14px;padding:10px}
+    .kbox{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:14px;
+      padding:10px;
+    }
     .kbox .t{font-size:12px;color:var(--muted)}
     .kbox .v{font-size:18px;font-weight:900;margin-top:4px;font-variant-numeric:tabular-nums}
-    .consoleWrap{display:none;margin-top:12px}
-    .log{
-      border:1px solid var(--line);background:rgba(5,9,18,.45);
-      border-radius:14px;padding:10px;
-      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size:12px;white-space:pre-wrap;max-height:320px;overflow:auto;color:#d6e6ff
+
+    .monoBox{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:14px;
+      padding:10px;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      font-size:12px;
+      white-space:pre-wrap;
+      max-height:260px;
+      overflow:auto;
+      color:#111827;
     }
   </style>
 </head>
@@ -111,9 +211,10 @@
         <h1>Internal ERP</h1>
         <span class="pill">Google Sheets + Apps Script</span>
       </div>
-      <div class="row">
+      <div class="btns">
         <span class="pill">FX: 2 decimals</span>
         <span class="pill" id="apiStatus">API: not tested</span>
+        <button class="ghost" id="btnPing" type="button">Test API</button>
       </div>
     </div>
   </div>
@@ -134,14 +235,13 @@
       </h2>
 
       <div class="body">
-        <div class="row" style="justify-content:space-between;margin-bottom:10px;">
-          <div class="row">
+        <div class="row" style="margin-bottom:10px;">
+          <div class="btns">
             <span class="chip" id="poChip">PO: (none)</span>
             <span class="chip" id="soChip">SO: (none)</span>
           </div>
           <div class="btns">
-            <button class="ghost" id="btnPing">Test API</button>
-            <button class="ghost" id="btnToggleConsole">Show Console</button>
+            <button class="ghost" id="btnClear" type="button">Clear Form</button>
           </div>
         </div>
 
@@ -149,8 +249,8 @@
         <section class="section active" id="purchase">
           <div class="step">
             <div class="stepTitle">
-              <strong>Step 1 — Create PO Header</strong>
-              <span class="chip">Create one PO → add many lines</span>
+              <strong>Purchase</strong>
+              <span class="chip">Flow: Header → Lines → Post to Inventory</span>
             </div>
 
             <div class="form">
@@ -172,17 +272,17 @@
               </div>
 
               <div class="col-12 btns">
-                <button id="btnCreatePO">Create PO Header</button>
-                <button class="ghost" id="btnNewPO">New PO</button>
+                <button id="btnCreatePO" type="button">Create Purchase Header</button>
+                <button class="ghost" id="btnNewPO" type="button">New PO</button>
               </div>
-              <div class="col-12 hint">Create PO once. “New PO” clears current PO for the next purchase.</div>
+              <div class="col-12 hint">FX is saved with 2 decimals. Shipping allocation is calculated by your Sheet formulas.</div>
             </div>
           </div>
 
           <div class="step">
             <div class="stepTitle">
-              <strong>Step 2 — Add Purchase Line</strong>
-              <span class="chip">Add SKU lines into this PO</span>
+              <strong>Purchase Lines</strong>
+              <span class="chip">Add SKU lines under current PO</span>
             </div>
 
             <div class="form">
@@ -204,11 +304,18 @@
               </div>
 
               <div class="col-12 btns">
-                <button class="secondary" id="btnAddPOLine" disabled>Add Purchase Line</button>
-                <button class="secondary" id="btnPostPO" disabled>Post PO → Inventory</button>
+                <button class="secondary" id="btnAddPOLine" type="button" disabled>Add Purchase Line</button>
+                <button class="secondary" id="btnPostPO" type="button" disabled>Post PO → Inventory</button>
               </div>
-              <div class="col-12 hint">Shipping allocation & landed cost are calculated by your Google Sheet formulas.</div>
             </div>
+          </div>
+
+          <div class="step">
+            <div class="stepTitle">
+              <strong>Status</strong>
+              <span class="chip">Last response</span>
+            </div>
+            <div class="monoBox" id="statusBox">No actions yet.</div>
           </div>
         </section>
 
@@ -216,8 +323,8 @@
         <section class="section" id="sales">
           <div class="step">
             <div class="stepTitle">
-              <strong>Step 1 — Create Sales Order</strong>
-              <span class="chip">Create one SO → add many lines</span>
+              <strong>Sales</strong>
+              <span class="chip">Flow: SO → Lines → Ship (FIFO)</span>
             </div>
 
             <div class="form">
@@ -235,16 +342,16 @@
               </div>
 
               <div class="col-12 btns">
-                <button id="btnCreateSO">Create SO</button>
-                <button class="ghost" id="btnNewSO">New SO</button>
+                <button id="btnCreateSO" type="button">Create Sales Order</button>
+                <button class="ghost" id="btnNewSO" type="button">New SO</button>
               </div>
             </div>
           </div>
 
           <div class="step">
             <div class="stepTitle">
-              <strong>Step 2 — Add Sales Line + Ship</strong>
-              <span class="chip">Ship (FIFO)</span>
+              <strong>Sales Lines + Shipping</strong>
+              <span class="chip">Ship writes Inventory OUT</span>
             </div>
 
             <div class="form">
@@ -266,11 +373,18 @@
               </div>
 
               <div class="col-12 btns">
-                <button class="secondary" id="btnAddSOLine" disabled>Add Sales Line</button>
-                <button class="danger" id="btnShipSO" disabled>Ship (FIFO)</button>
+                <button class="secondary" id="btnAddSOLine" type="button" disabled>Add Sales Line</button>
+                <button class="danger" id="btnShipSO" type="button" disabled>Ship (FIFO)</button>
               </div>
-              <div class="col-12 hint">Ship writes Inventory OUT + basic KPI results. (We can enhance full GL later.)</div>
             </div>
+          </div>
+
+          <div class="step">
+            <div class="stepTitle">
+              <strong>Status</strong>
+              <span class="chip">Last response</span>
+            </div>
+            <div class="monoBox" id="statusBox2">No actions yet.</div>
           </div>
         </section>
 
@@ -278,7 +392,7 @@
         <section class="section" id="expenses">
           <div class="step">
             <div class="stepTitle">
-              <strong>Add Operating Expense</strong>
+              <strong>Operating Expenses</strong>
               <span class="chip">Unlimited categories</span>
             </div>
 
@@ -305,8 +419,9 @@
               </div>
 
               <div class="col-12 btns">
-                <button id="btnAddExp">Save Expense</button>
+                <button id="btnAddExp" type="button">Save Expense</button>
               </div>
+              <div class="col-12 hint">Tip: Put “Marketing” in Category to show in marketing KPI later.</div>
             </div>
           </div>
         </section>
@@ -316,7 +431,7 @@
           <div class="step">
             <div class="stepTitle">
               <strong>Reports + Dashboard</strong>
-              <span class="chip">Select date here</span>
+              <span class="chip">Select date here (From/To)</span>
             </div>
 
             <div class="form">
@@ -329,8 +444,8 @@
                 <input id="rep_to" type="date"/>
               </div>
               <div class="col-4 btns">
-                <button id="btnGenReports">Generate</button>
-                <button class="ghost" id="btnRefreshKpi">Refresh KPI</button>
+                <button id="btnGenReports" type="button">Generate</button>
+                <button class="ghost" id="btnRefreshKpi" type="button">Refresh KPI</button>
               </div>
             </div>
 
@@ -349,7 +464,7 @@
               </div>
             </div>
 
-            <div class="hint">Generate will set Reports_PnL!A2:B2 automatically, then pull KPI from Dashboard sheet.</div>
+            <div class="hint">Generate sets Reports_PnL!A2:B2 then pulls KPI from Dashboard (via Apps Script).</div>
           </div>
         </section>
 
@@ -362,26 +477,12 @@
             </div>
 
             <div class="btns" style="margin-bottom:10px;">
-              <button id="btnInv">Refresh</button>
+              <button id="btnInv" type="button">Refresh</button>
             </div>
 
-            <div class="log" id="invLog">Click Refresh to load on-hand by SKU.</div>
+            <div class="monoBox" id="invBox">Click Refresh to load on-hand by SKU.</div>
           </div>
         </section>
-
-        <!-- Console (hidden by default) -->
-        <div class="consoleWrap" id="consoleWrap">
-          <div class="step">
-            <div class="stepTitle">
-              <strong>Console (optional)</strong>
-              <span class="chip">For debugging only</span>
-            </div>
-            <div class="hint" style="margin-bottom:8px;word-break:break-all">
-              Backend URL: <span id="apiUrl"></span>
-            </div>
-            <div class="log" id="log"></div>
-          </div>
-        </div>
 
       </div>
     </div>
@@ -389,21 +490,15 @@
 </main>
 
 <script>
-  // Your Apps Script Web App URL (LIVE)
   const API_URL = "https://script.google.com/macros/s/AKfycbwYLqU1MhrhL3dy3A4HZZDN-9Tifs7iDNB26jg8XiJIg2e_LogxAljN5sUbgEhD9FA/exec";
 
   const $ = (id)=>document.getElementById(id);
-
-  const apiStatus = $("apiStatus");
-  const logEl = $("log");
-  const consoleWrap = $("consoleWrap");
-  $("apiUrl").textContent = API_URL;
 
   let currentPO = null;
   let currentSO = null;
 
   function isoToday(){ return new Date().toISOString().slice(0,10); }
-  function setDefaultsIfEmpty(){
+  function setDefaults(){
     const iso = isoToday();
     if(!$("po_date").value) $("po_date").value = iso;
     if(!$("so_date").value) $("so_date").value = iso;
@@ -412,7 +507,7 @@
     if(!$("rep_from").value) $("rep_from").value = iso;
     if(!$("rep_to").value) $("rep_to").value = iso;
   }
-  setDefaultsIfEmpty();
+  setDefaults();
 
   function round2(n){
     const x = Number(n);
@@ -420,11 +515,12 @@
     return (Math.round(x*100)/100).toFixed(2);
   }
 
-  function appendLog(obj){
-    if(!logEl) return;
+  function setStatus(boxId, obj){
+    const box = $(boxId);
+    if(!box) return;
     const t = new Date().toISOString();
-    const msg = (typeof obj === "string") ? obj : JSON.stringify(obj, null, 2);
-    logEl.textContent = `[${t}] ${msg}\n\n` + logEl.textContent;
+    const txt = (typeof obj === "string") ? obj : JSON.stringify(obj, null, 2);
+    box.textContent = `[${t}]\n${txt}`;
   }
 
   async function apiCall(action, data={}, {timeoutMs=15000, retries=1} = {}){
@@ -455,8 +551,7 @@
       }catch(err){
         clearTimeout(timer);
         if(attempt < retries){
-          appendLog({warn:"request failed, retrying", attempt, error:String(err)});
-          await new Promise(r=>setTimeout(r, 500));
+          await new Promise(r=>setTimeout(r, 450));
           continue;
         }
         throw err;
@@ -486,26 +581,45 @@
     });
   });
 
-  // Console toggle
-  $("btnToggleConsole").addEventListener("click", ()=>{
-    const open = consoleWrap.style.display === "block";
-    consoleWrap.style.display = open ? "none" : "block";
-    $("btnToggleConsole").textContent = open ? "Show Console" : "Hide Console";
-  });
-
   // Ping
   $("btnPing").addEventListener("click", async ()=>{
     try{
       const res = await fetch(API_URL + "?action=ping");
       const json = await res.json();
-      apiStatus.textContent = "API: OK";
-      apiStatus.className = "pill good";
-      appendLog(json);
+      $("apiStatus").textContent = "API: OK";
+      $("apiStatus").className = "pill good";
+      setStatus("statusBox", json);
     }catch(e){
-      apiStatus.textContent = "API: ERROR";
-      apiStatus.className = "pill bad";
-      appendLog({error:String(e)});
+      $("apiStatus").textContent = "API: ERROR";
+      $("apiStatus").className = "pill bad";
+      setStatus("statusBox", {error:String(e)});
     }
+  });
+
+  // Clear
+  $("btnClear").addEventListener("click", ()=>{
+    currentPO = null;
+    currentSO = null;
+    $("po_supplier").value = "";
+    $("po_fx").value = "";
+    $("po_ship").value = "";
+    $("po_sku").value = "";
+    $("po_qty").value = "";
+    $("po_rmb_unit").value = "";
+    $("po_loc").value = "MAIN";
+    $("so_customer").value = "";
+    $("so_loc").value = "MAIN";
+    $("so_sku").value = "";
+    $("so_qty").value = "";
+    $("so_price").value = "";
+    $("exp_cat").value = "";
+    $("exp_sub").value = "";
+    $("exp_amt").value = "";
+    $("exp_note").value = "";
+    setDefaults();
+    updateChips();
+    setStatus("statusBox", "Cleared.");
+    setStatus("statusBox2", "Cleared.");
   });
 
   // New PO
@@ -517,9 +631,9 @@
     $("po_sku").value = "";
     $("po_qty").value = "";
     $("po_rmb_unit").value = "";
-    setDefaultsIfEmpty();
+    setDefaults();
     updateChips();
-    appendLog("New PO started.");
+    setStatus("statusBox", "New PO started.");
   });
 
   // Create PO
@@ -527,6 +641,7 @@
     try{
       const fxNum = parseFloat(String($("po_fx").value||"").trim());
       if(!isFinite(fxNum) || fxNum<=0) return alert("FX must be > 0 (example: 7.20)");
+
       const fx = Number(round2(fxNum));
       const shipNum = parseFloat(String($("po_ship").value||"0").trim());
       const ship = isFinite(shipNum) ? Number(round2(shipNum)) : 0;
@@ -538,12 +653,12 @@
         shipping_usd: ship
       });
 
-      appendLog(out);
       currentPO = out.result.po_id;
       updateChips();
+      setStatus("statusBox", out);
 
     }catch(e){
-      appendLog({error:String(e)});
+      setStatus("statusBox", {error:String(e)});
       alert("Create PO failed: " + e.message);
     }
   });
@@ -567,17 +682,17 @@
         rmb_unit_price: unit
       });
 
-      appendLog(out);
       $("po_qty").value = "";
       $("po_rmb_unit").value = "";
+      setStatus("statusBox", out);
 
     }catch(e){
-      appendLog({error:String(e)});
+      setStatus("statusBox", {error:String(e)});
       alert("Add line failed: " + e.message);
     }
   });
 
-  // Post PO to inventory
+  // Post PO
   $("btnPostPO").addEventListener("click", async ()=>{
     try{
       if(!currentPO) return alert("Create PO header first.");
@@ -585,11 +700,11 @@
         po_id: currentPO,
         location: $("po_loc").value || "MAIN"
       });
-      appendLog(out);
+      setStatus("statusBox", out);
       alert(`Posted to Inventory. Rows: ${out.result.posted_rows}`);
     }catch(e){
-      appendLog({error:String(e)});
-      alert("Post failed: " + e.message + "\n\nTip: Ensure Purchase_Lines landed_unit_cost_usd is not blank.");
+      setStatus("statusBox", {error:String(e)});
+      alert("Post failed: " + e.message + "\n\nTip: Make sure Purchase_Lines landed_unit_cost_usd has values (formulas).");
     }
   });
 
@@ -600,9 +715,9 @@
     $("so_sku").value = "";
     $("so_qty").value = "";
     $("so_price").value = "";
-    setDefaultsIfEmpty();
+    setDefaults();
     updateChips();
-    appendLog("New SO started.");
+    setStatus("statusBox2", "New SO started.");
   });
 
   // Create SO
@@ -613,11 +728,11 @@
         customer: $("so_customer").value || "",
         status: "DRAFT"
       });
-      appendLog(out);
       currentSO = out.result.so_id;
       updateChips();
+      setStatus("statusBox2", out);
     }catch(e){
-      appendLog({error:String(e)});
+      setStatus("statusBox2", {error:String(e)});
       alert("Create SO failed: " + e.message);
     }
   });
@@ -637,12 +752,13 @@
       const out = await apiCall("addSalesOrderLine", {
         so_id: currentSO, sku, qty, sell_price_usd: price
       });
-      appendLog(out);
+
       $("so_qty").value = "";
       $("so_price").value = "";
+      setStatus("statusBox2", out);
 
     }catch(e){
-      appendLog({error:String(e)});
+      setStatus("statusBox2", {error:String(e)});
       alert("Add sales line failed: " + e.message);
     }
   });
@@ -656,15 +772,15 @@
         ship_date: $("so_ship_date").value || isoToday(),
         location: $("so_loc").value || "MAIN"
       });
-      appendLog(out);
-      alert(`Shipped.\nRevenue: ${round2(out.result.revenue_usd)}\nCOGS: ${round2(out.result.cogs_usd)}\nGross Profit: ${round2(out.result.gross_profit_usd)}`);
+      setStatus("statusBox2", out);
+      alert(`Shipped.\nRevenue: ${round2(out.result.revenue_usd)}\nCOGS: ${round2(out.result.cogs_usd)}\nGross: ${round2(out.result.gross_profit_usd)}`);
     }catch(e){
-      appendLog({error:String(e)});
+      setStatus("statusBox2", {error:String(e)});
       alert("Ship failed: " + e.message);
     }
   });
 
-  // Expenses
+  // Expense
   $("btnAddExp").addEventListener("click", async ()=>{
     try{
       const amt = Number($("exp_amt").value);
@@ -677,57 +793,52 @@
         amount_usd: amt,
         note: $("exp_note").value || ""
       });
-      appendLog(out);
+
       $("exp_amt").value = "";
       $("exp_note").value = "";
       alert("Expense saved.");
+      setStatus("statusBox", out);
+
     }catch(e){
-      appendLog({error:String(e)});
+      setStatus("statusBox", {error:String(e)});
       alert("Expense failed: " + e.message);
     }
   });
 
-  // Reports: set date + generate + refresh KPI
+  // KPI
   async function refreshKpi(){
     const out = await apiCall("getDashboardKpis", {});
     $("kpiSales").textContent = round2(out.result.sales);
     $("kpiNet").textContent = round2(out.result.net_profit);
     $("kpiMkt").textContent = round2(out.result.marketing_expense);
-    appendLog(out);
   }
 
   $("btnGenReports").addEventListener("click", async ()=>{
     try{
       const from = $("rep_from").value || isoToday();
       const to = $("rep_to").value || isoToday();
-
       await apiCall("setReportDates", { from_date: from, to_date: to });
-      const out = await apiCall("generateReports", {});
-      appendLog(out);
-
+      await apiCall("generateReports", {});
       await refreshKpi();
-      alert("Reports generated. KPI loaded from Dashboard.");
+      alert("Reports generated + KPI refreshed.");
     }catch(e){
-      appendLog({error:String(e)});
       alert("Generate reports failed: " + e.message);
     }
   });
 
   $("btnRefreshKpi").addEventListener("click", async ()=>{
     try{ await refreshKpi(); }
-    catch(e){ appendLog({error:String(e)}); alert("Refresh KPI failed: " + e.message); }
+    catch(e){ alert("Refresh KPI failed: " + e.message); }
   });
 
   // Inventory
   $("btnInv").addEventListener("click", async ()=>{
     try{
       const out = await apiCall("getInventoryOnHand", {});
-      appendLog(out);
       const map = out.result.on_hand || {};
       const lines = Object.keys(map).sort().map(sku => `${sku}: ${map[sku]}`).join("\n");
-      $("invLog").textContent = lines || "(no inventory yet)";
+      $("invBox").textContent = lines || "(no inventory yet)";
     }catch(e){
-      appendLog({error:String(e)});
       alert("Inventory refresh failed: " + e.message);
     }
   });
@@ -737,13 +848,13 @@
     try{
       const res = await fetch(API_URL + "?action=ping");
       const json = await res.json();
-      apiStatus.textContent = "API: OK";
-      apiStatus.className = "pill good";
-      appendLog(json);
+      $("apiStatus").textContent = "API: OK";
+      $("apiStatus").className = "pill good";
+      setStatus("statusBox", json);
     }catch(e){
-      apiStatus.textContent = "API: ERROR";
-      apiStatus.className = "pill bad";
-      appendLog({error:String(e)});
+      $("apiStatus").textContent = "API: ERROR";
+      $("apiStatus").className = "pill bad";
+      setStatus("statusBox", {error:String(e)});
     }
   })();
 </script>
